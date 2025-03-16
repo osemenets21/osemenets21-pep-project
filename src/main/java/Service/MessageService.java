@@ -16,16 +16,13 @@ public class MessageService {
      */
     public Message createMessage(Message message) {
         if (message.getMessage_text() == null || message.getMessage_text().isBlank()) {
-            System.out.println("Error: Message text cannot be empty.");
-            return null;
+            return null; // Message text cannot be empty
         }
         if (message.getMessage_text().length() > 255) {
-            System.out.println("Error: Message text exceeds 255 characters.");
-            return null;
+            return null; // Message text exceeds character limit
         }
-        if (message.getPosted_by() <= 0) {
-            System.out.println("Error: Invalid user ID.");
-            return null;
+        if (!messageDAO.doesUserExist(message.getPosted_by())) {
+            return null; // User does not exist
         }
         return messageDAO.createMessage(message);
     }
@@ -48,11 +45,7 @@ public class MessageService {
      * Deletes a message by its ID.
      */
     public Message deleteMessageById(int messageId) {
-        Message deletedMessage = messageDAO.deleteMessageById(messageId);
-        if (deletedMessage == null) {
-            System.out.println("Error: Message not found for deletion.");
-        }
-        return deletedMessage;
+        return messageDAO.deleteMessageById(messageId);
     }
 
     /**
@@ -60,9 +53,21 @@ public class MessageService {
      */
     public Message updateMessage(int messageId, String newText) {
         if (newText == null || newText.isBlank() || newText.length() > 255) {
-            System.out.println("Error: Invalid new message text.");
-            return null;
+            return null; // Invalid new message text
+        }
+        if (messageDAO.getMessageById(messageId) == null) {
+            return null; // Message does not exist
         }
         return messageDAO.updateMessage(messageId, newText);
+    }
+
+    /**
+     * Retrieves all messages posted by a specific user.
+     */
+    public List<Message> getMessagesByUser(int accountId) {
+        if (!messageDAO.doesUserExist(accountId)) {
+            return List.of(); // Return empty list if user doesn't exist
+        }
+        return messageDAO.getMessagesByUser(accountId);
     }
 }
