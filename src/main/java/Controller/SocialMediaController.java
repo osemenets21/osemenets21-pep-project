@@ -108,10 +108,11 @@ public class SocialMediaController {
     private void deleteMessageHandler(Context ctx) {
         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
         Message deletedMessage = messageService.deleteMessageById(messageId);
+    
         if (deletedMessage != null) {
-            ctx.json(deletedMessage);
+            ctx.status(200).json(deletedMessage); // Return the deleted message
         } else {
-            ctx.status(200).result("");
+            ctx.status(200).result(""); // Keep empty response if message not found
         }
     }
 

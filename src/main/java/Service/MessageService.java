@@ -26,6 +26,7 @@ public class MessageService {
         }
         return messageDAO.createMessage(message);
     }
+    
 
     /**
      * Retrieves all messages from the database.

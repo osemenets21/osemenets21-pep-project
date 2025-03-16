@@ -22,11 +22,11 @@ public class MessageDAO {
             stmt.setString(2, message.getMessage_text());
             stmt.setLong(3, message.getTime_posted_epoch());
             stmt.executeUpdate();
-
+    
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    message.setMessage_id(rs.getInt(1));
-                    return message;
+                    int generatedId = rs.getInt(1);  // Capture the generated message_id
+                    return new Message(generatedId, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
                 }
             }
         } catch (SQLException e) {
@@ -34,6 +34,7 @@ public class MessageDAO {
         }
         return null;
     }
+    
 
     /**
      * Retrieves all messages from the database.
@@ -161,4 +162,5 @@ public class MessageDAO {
         }
         return false;
     }
+
 }
