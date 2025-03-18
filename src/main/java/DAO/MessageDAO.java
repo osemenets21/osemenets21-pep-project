@@ -12,9 +12,7 @@ public class MessageDAO {
         this.connection = connection;
     }
 
-    /**
-     * Creates a new message in the database.
-     */
+
     public Message createMessage(Message message) {
         String sql = "INSERT INTO message (posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -36,9 +34,7 @@ public class MessageDAO {
     }
     
 
-    /**
-     * Retrieves all messages from the database.
-     */
+
     public List<Message> getAllMessages() {
         List<Message> messages = new ArrayList<>();
         String sql = "SELECT * FROM message";
@@ -58,9 +54,7 @@ public class MessageDAO {
         return messages;
     }
 
-    /**
-     * Retrieves a message by its ID.
-     */
+
     public Message getMessageById(int messageId) {
         String sql = "SELECT * FROM message WHERE message_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -81,9 +75,6 @@ public class MessageDAO {
         return null;
     }
 
-    /**
-     * Deletes a message by its ID.
-     */
     public Message deleteMessageById(int messageId) {
         Message message = getMessageById(messageId);
         if (message == null) {
@@ -103,9 +94,7 @@ public class MessageDAO {
         return null;
     }
 
-    /**
-     * Updates a message's text by its ID.
-     */
+ 
     public Message updateMessage(int messageId, String newText) {
         String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -121,9 +110,7 @@ public class MessageDAO {
         return null;
     }
 
-    /**
-     * Retrieves all messages posted by a specific user.
-     */
+
     public List<Message> getMessagesByUser(int accountId) {
         List<Message> messages = new ArrayList<>();
         String sql = "SELECT * FROM message WHERE posted_by = ?";
@@ -145,9 +132,7 @@ public class MessageDAO {
         return messages;
     }
 
-    /**
-     * Checks if a user exists in the database.
-     */
+
     public boolean doesUserExist(int accountId) {
         String sql = "SELECT COUNT(*) FROM account WHERE account_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
